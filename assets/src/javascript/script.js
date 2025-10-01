@@ -2,7 +2,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const botaoEnviar = document.querySelector('.button[src="assets/src/icons/send.svg"]')
     const inputMensagem = document.querySelector('#inputText')
     const caixaDeMensagem = document.querySelector('.conteinerDeMensagem')
-
+    const mensagensDoBot = [
+        "oi",
+        "Vamos programar",
+        "Eu sou O Novo Bot",
+        "Tem café?",
+        "Como posso te ajudar?"
+    ]
+    const listaDeContatos = document.querySelector('.list-contacts')
+    const contatos = [
+        {
+            id: 1,
+            foto: "src='assets/src/images/greg--james.png'",
+            nome: "Lucas",
+            ultimaMensagem: "Tem café?",
+            ultimaHora: "Tue"
+        },
+        {
+            id: 2,
+            foto: "src='assets/src/images/david--moore.png'",
+            nome: "Miguel",
+            ultimaMensagem: "salvee",
+            ultimaHora: "Fry"
+        }
+    ]
     // Actions
     botaoEnviar.addEventListener("click", () => {
         enviarMensagem()
@@ -15,13 +38,53 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     
     // Functions
+    function carregandoContatos() {
+        const novaCaixa = document.createElement('div')
+        novaCaixa.classList.add('boxContacts')
+        
+        contatos.forEach( (contato) => {
+
+            novaCaixa.innerHTML = `
+                
+            <div class="profile">
+                <img ${contato.foto}>
+            </div>
+    
+            <div class="boxText">
+                <b class="name">${contato.nome}</b>
+                <p class="lastMessage">${contato.ultimaMensagem}</p>
+            </div>
+    
+            <div class="lastItems">
+                <div class="hours">${contato.ultimaHora}</div>
+            </div>
+    
+            `
+        
+        })
+
+        listaDeContatos.appendChild(novaCaixa)
+
+    }
+
+    function respostaDoBot(mensagem) {
+            const posicao = Math.floor(Math.random() * mensagensDoBot.length)
+            mensagem = mensagensDoBot[posicao]
+
+            return mensagem
+        }
+
     function enviarMensagem() {
         const mensagem = inputMensagem.value
 
         if(mensagem == "") {
             alert('Digite alguma coisa...')
         } else {
-            renderizarMensagem('recebido', 'outros', mensagem)
+            renderizarMensagem('enviado', 'voce', mensagem)
+            inputMensagem.value = ""
+            setTimeout( () => {
+            renderizarMensagem('recebido', 'outros', respostaDoBot())
+            },2000)
         }
     }
 
@@ -50,6 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
         caixaDeMensagem.appendChild(novaDiv);
     }
 
-
     console.log("Carregado")
+
+    setTimeout(() => {
+        carregandoContatos()
+    }, 3500)
 })
+
+/**
+ *  
+    <div class="boxContacts">
+        
+    </div>
+ * 
+ * 
+ */
